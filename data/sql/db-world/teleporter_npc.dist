@@ -1,8 +1,8 @@
 /*
-TrinityCore Portal Master
-By Rochet2
-Downloaded from http://rochet2.github.io/
-Bugs and contact with E-mail: Rochet2@post.com
+Based upon the work by Rochet2 "TrinityCore Portal Master"
+Download it from from http://rochet2.github.io/
+
+Updated by Zoidwaffle to work with Azerothcore, all credits to the original author.
 */
 
 SET
@@ -519,19 +519,19 @@ INSERT INTO smart_scripts (entryorguid, source_type, id, link, event_type, event
 -- Teleporter spawns:
 
 ALTER TABLE creature AUTO_INCREMENT = 200000;
-INSERT INTO creature (id, map, spawnMask, phaseMask, modelid, position_x, position_y, position_z, orientation, spawntimesecs, spawndist, curhealth, curmana) VALUES
-(@ENTRY, 0, 1, 1, 0, -13180.5, 342.503, 43.1936, 4.32977, 25, 0, 13700, 6540), 
-(@ENTRY, 530, 1, 1, 0, -3862.69, -11645.8, -137.629, 2.38273, 25, 0, 13700, 6540), 
-(@ENTRY, 0, 1, 1, 0, -4898.37, -965.118, 501.447, 2.25986, 25, 0, 13700, 6540), 
-(@ENTRY, 0, 1, 1, 0, -8845.09, 624.828, 94.2999, 0.44062, 25, 0, 13700, 6540), 
-(@ENTRY, 1, 1, 1, 0, 1599.25, -4375.85, 10.0872, 5.23641, 25, 0, 13700, 6540), 
-(@ENTRY, 1, 1, 1, 0, -1277.65, 72.9751, 128.742, 5.95567, 25, 0, 13700, 6540), 
-(@ENTRY, 0, 1, 1, 0, 1637.21, 240.132, -43.1034, 3.13147, 25, 0, 13700, 6540), 
-(@ENTRY, 530, 1, 1, 0, 9741.67, -7454.19, 13.5572, 3.14231, 25, 0, 13700, 6540), 
-(@ENTRY, 571, 1, 1, 0, 5807.06, 506.244, 657.576, 5.54461, 25, 0, 13700, 6540), 
-(@ENTRY, 1, 1, 1, 0, 9866.83, 2494.66, 1315.88, 5.9462, 25, 0, 13700, 6540), 
-(@ENTRY, 0, 1, 1, 0, -14279.8, 555.014, 8.90011, 3.97606, 25, 0, 13700, 6540), 
-(@ENTRY, 530, 1, 1, 0, -1888.65, 5355.88, -12.4279, 1.25883, 25, 0, 13700, 6540);
+INSERT INTO creature (id, map, spawnMask, phaseMask, modelid, position_x, position_y, position_z, orientation, spawntimesecs, curhealth, curmana) VALUES
+(@ENTRY, 0, 1, 1, 0, -13180.5, 342.503, 43.1936, 4.32977, 25, 13700, 6540), 
+(@ENTRY, 530, 1, 1, 0, -3862.69, -11645.8, -137.629, 2.38273, 25, 13700, 6540), 
+(@ENTRY, 0, 1, 1, 0, -4898.37, -965.118, 501.447, 2.25986, 25, 13700, 6540), 
+(@ENTRY, 0, 1, 1, 0, -8845.09, 624.828, 94.2999, 0.44062, 25, 13700, 6540), 
+(@ENTRY, 1, 1, 1, 0, 1599.25, -4375.85, 10.0872, 5.23641, 25, 13700, 6540), 
+(@ENTRY, 1, 1, 1, 0, -1277.65, 72.9751, 128.742, 5.95567, 25, 13700, 6540), 
+(@ENTRY, 0, 1, 1, 0, 1637.21, 240.132, -43.1034, 3.13147, 25, 13700, 6540), 
+(@ENTRY, 530, 1, 1, 0, 9741.67, -7454.19, 13.5572, 3.14231, 25, 13700, 6540), 
+(@ENTRY, 571, 1, 1, 0, 5807.06, 506.244, 657.576, 5.54461, 25, 13700, 6540), 
+(@ENTRY, 1, 1, 1, 0, 9866.83, 2494.66, 1315.88, 5.9462, 25, 13700, 6540), 
+(@ENTRY, 0, 1, 1, 0, -14279.8, 555.014, 8.90011, 3.97606, 25, 13700, 6540), 
+(@ENTRY, 530, 1, 1, 0, -1888.65, 5355.88, -12.4279, 1.25883, 25, 13700, 6540);
 
 -- Rune spawns:
 
@@ -549,10 +549,3 @@ INSERT INTO gameobject (id, map, spawnMask, phaseMask, position_x, position_y, p
 (@RUNE, 0, 1, 1, 1633.75, 240.167, -43.1034, 3.13147, 0.999987, 0.00506132, 25, 1), 
 (@RUNE, 0, 1, 1, -13181.8, 339.356, 42.9805, 1.18013, 0.556415, 0.830904, 25, 1), 
 (@RUNE, 1, 1, 1, -1274.45, 71.8601, 128.159, 2.80623, 0.985974, 0.166898, 25, 1);
-
-/*
-TrinityCore Portal Master
-By Rochet2
-Downloaded from http://rochet2.github.io/
-Bugs and contact with E-mail: Rochet2@post.com
-*/
