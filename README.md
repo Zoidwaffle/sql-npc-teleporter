@@ -17,9 +17,9 @@ It also includes a teleporting NPC that will be able to send players to starting
 - Tested on AzerothCore release [9a9308](https://github.com/azerothcore/azerothcore-wotlk/commit/9a9308afd16a291e4c88b53c1bc2852223682c19)
 
 ### How to install
-1. Rename the file `data/sql/db-world/teleporter_capital_npc.dist` to `data/sql/db-world/teleporter_capital_npc.sql`.
-2. Rename the file `data/sql/db-world/teleporter_starting_zone_npc.dist` to `data/sql/db-world/teleporter_starting_zone_npc.sql`.
-3. Modify is you see fit.
+1. Rename the file `data/sql/db-world/teleporter_capital.dist` to `data/sql/db-world/teleporter_capital.sql`.
+2. Rename the file `data/sql/db-world/teleporter_starting_zone.dist` to `data/sql/db-world/teleporter_starting_zone.sql`.
+3. Modify is you see fit (need for cross faction etc.).
 4. Import to world database.
 5. Restart the world server.
 6. Done :)

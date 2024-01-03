@@ -1,17 +1,29 @@
 /*
-Based upon the work by Rochet2 "TrinityCore Portal Master"
+Inspired by the work by Rochet2 "TrinityCore Portal Master"
 Download it from from http://rochet2.github.io/
-
-Updated by Zoidwaffle to work with Azerothcore, all credits to the original author.
 */
 
 SET
-@ENTRY          := 190001,
-@NAME           := "Zone relocator",
-@SUBNAME        := "",
-@MODEL          := 21572,
+@ENTRY            := 190001,
+@NAME             := "Zoidgie",
+@SUBNAME          := "Zone Relocator",
 
-@AURA           := "30540", -- "35766" = casting
+-- What the NPC looks like
+-- @MODEL            := 21572, -- Default character
+-- @MODEL            := 19343, -- Goblin character
+@MODEL            := 3124, -- Gnome character
+
+
+-- Select if the NPC is casting or not
+@AURA             := "30540", -- not casting
+-- @AURA             := "35766", -- casting
+
+-- If cross faction, set the faction values to 0, otherwise keep them as 469 and 67.
+-- 469 = Alliance
+-- 67  = Horde
+-- 0   = Both factions
+@ALLIANCE_FACTION := 469,
+@HORDE_FACTION    := 67,
 
 @TEXT_ID        := 300005,
 @GOSSIP_MENU    := 50009;
@@ -23,9 +35,9 @@ DELETE FROM creature_template_addon WHERE Entry = @ENTRY ;
 DELETE FROM gossip_menu WHERE menuid BETWEEN @GOSSIP_MENU AND @GOSSIP_MENU+8;
 DELETE FROM npc_text WHERE ID BETWEEN @TEXT_ID AND @TEXT_ID+4;
 DELETE FROM gossip_menu_option WHERE menuid = @GOSSIP_MENU;
--- DELETE FROM gossip_menu_option WHERE menuid BETWEEN @GOSSIP_MENU AND @GOSSIP_MENU+8;
+DELETE FROM gossip_menu_option WHERE menuid BETWEEN @GOSSIP_MENU AND @GOSSIP_MENU+8;
 DELETE FROM smart_scripts WHERE entryorguid = @ENTRY AND source_type = 0;
--- DELETE FROM conditions WHERE (SourceTypeOrReferenceId = 15 OR SourceTypeOrReferenceId = 14) AND SourceGroup BETWEEN @GOSSIP_MENU AND @GOSSIP_MENU+8;
+DELETE FROM conditions WHERE (SourceTypeOrReferenceId = 15 OR SourceTypeOrReferenceId = 14) AND SourceGroup BETWEEN @GOSSIP_MENU AND @GOSSIP_MENU+8;
 DELETE from creature WHERE id1 = @ENTRY;
 
 -- Teleporter
@@ -58,15 +70,15 @@ INSERT INTO npc_text (ID, text0_0, em0_1) VALUES
 
 -- Conditions for gossip option and menu factions
 
--- INSERT INTO conditions (SourceTypeOrReferenceId, SourceGroup, SourceEntry, ConditionTypeOrReference, ConditionValue1, Comment) VALUES
--- (15, @GOSSIP_MENU, 1, 6, 0, "Stormwind"),
--- (15, @GOSSIP_MENU, 2, 6, 0, "Orgrimmar"),
--- (15, @GOSSIP_MENU, 3, 6, 0, "Darnassus"),
--- (15, @GOSSIP_MENU, 4, 6, 0, "Ironforge"),
--- (15, @GOSSIP_MENU, 5, 6, 0, "Exodar"),
--- (15, @GOSSIP_MENU, 6, 6, 0, "Thunder bluff"),
--- (15, @GOSSIP_MENU, 7, 6, 0, "Undercity"),
--- (15, @GOSSIP_MENU, 8, 6, 0, "Silvermoon city");
+INSERT INTO conditions (SourceTypeOrReferenceId, SourceGroup, SourceEntry, ConditionTypeOrReference, ConditionValue1, Comment) VALUES
+(15, @GOSSIP_MENU, 1, 6, @ALLIANCE_FACTION, "Northshire Valley"),
+(15, @GOSSIP_MENU, 2, 6, @HORDE_FACTION, "Valley of Trials"),
+(15, @GOSSIP_MENU, 3, 6, @ALLIANCE_FACTION, "Shadowglen"),
+(15, @GOSSIP_MENU, 4, 6, @ALLIANCE_FACTION, "Coldridge Valley"),
+(15, @GOSSIP_MENU, 5, 6, @ALLIANCE_FACTION, "Amman Vale"),
+(15, @GOSSIP_MENU, 6, 6, @HORDE_FACTION, "Camp Narache"),
+(15, @GOSSIP_MENU, 7, 6, @HORDE_FACTION, "Shadow Grave"),
+(15, @GOSSIP_MENU, 8, 6, @HORDE_FACTION, "Sunstrider Isle");
 
 -- Gossip options:
 
