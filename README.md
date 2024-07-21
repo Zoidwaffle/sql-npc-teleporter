@@ -6,12 +6,14 @@
 - Entirely based on SQL!
 
 #### Features:
-This enables a teleporting NPC that will be able to send players to level and faction appropriate destinations such as:
+There are 2 teleporting NPC's available.
+
+First is a teleporting NPC located in capitals, that will be able to send players to level and faction appropriate destinations such as:
 - Zones
 - Dungeons
 - Raids
 
-It also includes a teleporting NPC that will be able to send players to starting zones (let's say you start as one race but prefer a different starting zone).
+It also includes a teleporting NPC where players start, that will be able to send players to starting zones (let's say you start as one race but prefer a different starting zone).
 
 ### Requirements:
 - Tested on AzerothCore release [9a9308](https://github.com/azerothcore/azerothcore-wotlk/commit/9a9308afd16a291e4c88b53c1bc2852223682c19)
