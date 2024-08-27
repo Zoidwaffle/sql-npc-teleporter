@@ -12,7 +12,7 @@ SET
 -- @MODEL            := 21572, -- Default character
 -- @MODEL            := 19343, -- Goblin character
 @MODEL            := 3124, -- Gnome character
-
+@SCALE          := 2,
 
 -- Select if the NPC is casting or not
 @AURA             := "30540", -- not casting
@@ -31,6 +31,7 @@ SET
 -- Deleting code
 
 DELETE FROM creature_template WHERE entry = @ENTRY;
+DELETE FROM creature_template_model WHERE CreatureID = @ENTRY;
 DELETE FROM creature_template_addon WHERE Entry = @ENTRY ;
 DELETE FROM gossip_menu WHERE menuid BETWEEN @GOSSIP_MENU AND @GOSSIP_MENU+8;
 DELETE FROM npc_text WHERE ID BETWEEN @TEXT_ID AND @TEXT_ID+4;
@@ -42,8 +43,11 @@ DELETE from creature WHERE id1 = @ENTRY;
 
 -- Teleporter
 
-INSERT INTO creature_template (entry, modelid1, name, subname, IconName, gossip_menu_id, minlevel, maxlevel, faction, npcflag, speed_walk, speed_run, scale, unit_class, unit_flags, type, type_flags, RegenHealth, flags_extra, AIName, ScriptName) VALUES
-(@ENTRY, @MODEL, @NAME, @SUBNAME, "Directions", @GOSSIP_MENU, 71, 71, 35, 3, 1, 1.14286, 1, 1, 2, 7, 138936390, 1, 2, "SmartAI", "SmartAI");
+INSERT INTO creature_template (entry, name, subname, IconName, gossip_menu_id, minlevel, maxlevel, faction, npcflag, speed_walk, speed_run, unit_class, unit_flags, type, type_flags, RegenHealth, flags_extra, AIName, ScriptName) VALUES
+(@ENTRY, @NAME, @SUBNAME, "Directions", @GOSSIP_MENU, 71, 71, 35, 3, 1, 1.14286, 1, 1, 7, 138936390, 1, 2, "SmartAI", "SmartAI");
+
+INSERT INTO  creature_template_model (CreatureID,CreatureDisplayID,DisplayScale) VALUES
+(@ENTRY, @MODEL, @SCALE);
 
 -- Teleporter aura
 

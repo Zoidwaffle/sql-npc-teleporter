@@ -10,6 +10,7 @@ SET
 @NAME           := "Portal Master",
 @SUBNAME        := "",
 @MODEL          := 21572,
+@SCALE          := 2,
 
 @AURA           := "30540", -- "35766" = casting
 
@@ -21,6 +22,7 @@ SET
 -- Deleting code
 
 DELETE FROM creature_template WHERE entry = @ENTRY;
+DELETE FROM creature_template_model WHERE CreatureID = @ENTRY;
 DELETE FROM creature_template_addon WHERE Entry = @ENTRY ;
 DELETE FROM gossip_menu WHERE menuid BETWEEN @GOSSIP_MENU AND @GOSSIP_MENU+8;
 DELETE FROM npc_text WHERE ID BETWEEN @TEXT_ID AND @TEXT_ID+4;
@@ -32,8 +34,11 @@ DELETE from gameobject WHERE ID = @RUNE AND guid >= 200000;
 
 -- Teleporter
 
-INSERT INTO creature_template (entry, modelid1, name, subname, IconName, gossip_menu_id, minlevel, maxlevel, faction, npcflag, speed_walk, speed_run, scale, unit_class, unit_flags, type, type_flags, RegenHealth, flags_extra, AIName, ScriptName) VALUES
-(@ENTRY, @MODEL, @NAME, @SUBNAME, "Directions", @GOSSIP_MENU, 71, 71, 35, 3, 1, 1.14286, 1.25, 1, 2, 7, 138936390, 1, 2, "SmartAI", "SmartAI");
+INSERT INTO creature_template (entry, name, subname, IconName, gossip_menu_id, minlevel, maxlevel, faction, npcflag, speed_walk, speed_run, unit_class, unit_flags, type, type_flags, RegenHealth, flags_extra, AIName, ScriptName) VALUES
+(@ENTRY, @NAME, @SUBNAME, "Directions", @GOSSIP_MENU, 71, 71, 35, 3, 1, 1.14286, 1.25, 1, 7, 138936390, 1, 2, "SmartAI", "SmartAI");
+
+INSERT INTO  creature_template_model (CreatureID,CreatureDisplayID,DisplayScale) VALUES
+(@ENTRY, @MODEL, @SCALE);
 
 -- Teleporter aura
 
@@ -212,7 +217,7 @@ INSERT INTO conditions (SourceTypeOrReferenceId, SourceGroup, SourceEntry, Condi
 (15, @GOSSIP_MENU+1, 9, 27, 21, 3, 0, "Portal Master - Level req"),
 (15, @GOSSIP_MENU+1, 8, 27, 17, 3, 0, "Portal Master - Level req"),
 (15, @GOSSIP_MENU+1, 7, 27, 18, 3, 0, "Portal Master - Level req"),
-(15, @GOSSIP_MENU+1, 6, 27, 32, 3, 0, "Portal Master - Level req"),
+(15, @GOSSIP_MENU+1, 6, 27, 29, 3, 0, "Portal Master - Level req"),
 (15, @GOSSIP_MENU+1, 5, 27, 24, 3, 0, "Portal Master - Level req"),
 (15, @GOSSIP_MENU+1, 4, 27, 34, 3, 0, "Portal Master - Level req"),
 (15, @GOSSIP_MENU+1, 3, 27, 15, 3, 0, "Portal Master - Level req"),
