@@ -11,13 +11,11 @@ SET
 @SUBNAME := "",
 @MODEL := 21572,
 @SCALE := 2,
-
 @AURA := "30540", -- "35766" = casting
-
 @TEXT_ID := 300000,
 @GOSSIP_MENU := 50000,
-
-@RUNE := 194394;
+@RUNE := 194394,
+@ONY_LEVEL := 60; -- 60 or 80 for Onyxia
 
 -- Deleting code
 
@@ -188,7 +186,7 @@ INSERT INTO conditions (SourceTypeOrReferenceId, SourceGroup, SourceEntry, Condi
 (15, @GOSSIP_MENU+4, 14, 27, 67, 3, 0, "Portal Master - Level req"),
 (15, @GOSSIP_MENU+4, 13, 27, 70, 3, 0, "Portal Master - Level req"),
 (15, @GOSSIP_MENU+4, 12, 27, 60, 3, 0, "Portal Master - Level req"),
-(15, @GOSSIP_MENU+4, 11, 27, 80, 3, 0, "Portal Master - Level req"),
+(15, @GOSSIP_MENU+4, 11, 27, @ONY_LEVEL, 3, 0, "Portal Master - Level req"),
 (15, @GOSSIP_MENU+4, 10, 27, 80, 3, 0, "Portal Master - Level req"),
 (15, @GOSSIP_MENU+4, 9, 27, 60, 3, 0, "Portal Master - Level req"),
 (15, @GOSSIP_MENU+4, 8, 27, 70, 3, 0, "Portal Master - Level req"),
