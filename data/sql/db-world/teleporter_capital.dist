@@ -6,29 +6,29 @@ Updated by Zoidwaffle to work with Azerothcore, all credits to the original auth
 */
 
 SET
-@ENTRY          := 190000,
-@NAME           := "Portal Master",
-@SUBNAME        := "",
-@MODEL          := 21572,
-@SCALE          := 2,
+@ENTRY := 190000,
+@NAME := "Portal Master",
+@SUBNAME := "",
+@MODEL := 21572,
+@SCALE := 2,
 
-@AURA           := "30540", -- "35766" = casting
+@AURA := "30540", -- "35766" = casting
 
-@TEXT_ID        := 300000,
-@GOSSIP_MENU    := 50000,
+@TEXT_ID := 300000,
+@GOSSIP_MENU := 50000,
 
-@RUNE           := 194394;
+@RUNE := 194394;
 
 -- Deleting code
 
 DELETE FROM creature_template WHERE entry = @ENTRY;
 DELETE FROM creature_template_model WHERE CreatureID = @ENTRY;
 DELETE FROM creature_template_addon WHERE Entry = @ENTRY ;
-DELETE FROM gossip_menu WHERE menuid BETWEEN @GOSSIP_MENU AND @GOSSIP_MENU+8;
-DELETE FROM npc_text WHERE ID BETWEEN @TEXT_ID AND @TEXT_ID+4;
-DELETE FROM gossip_menu_option WHERE menuid BETWEEN @GOSSIP_MENU AND @GOSSIP_MENU+8;
+DELETE FROM gossip_menu WHERE menuid BETWEEN @GOSSIP_MENU AND @GOSSIP_MENU+9;
+DELETE FROM npc_text WHERE ID BETWEEN @TEXT_ID AND @TEXT_ID+5;
+DELETE FROM gossip_menu_option WHERE menuid BETWEEN @GOSSIP_MENU AND @GOSSIP_MENU+9;
 DELETE FROM smart_scripts WHERE entryorguid = @ENTRY AND source_type = 0;
-DELETE FROM conditions WHERE (SourceTypeOrReferenceId = 15 OR SourceTypeOrReferenceId = 14) AND SourceGroup BETWEEN @GOSSIP_MENU AND @GOSSIP_MENU+8;
+DELETE FROM conditions WHERE (SourceTypeOrReferenceId = 15 OR SourceTypeOrReferenceId = 14) AND SourceGroup BETWEEN @GOSSIP_MENU AND @GOSSIP_MENU+9;
 DELETE from creature WHERE id1 = @ENTRY;
 DELETE from gameobject WHERE ID = @RUNE AND guid >= 200000;
 
@@ -37,7 +37,7 @@ DELETE from gameobject WHERE ID = @RUNE AND guid >= 200000;
 INSERT INTO creature_template (entry, name, subname, IconName, gossip_menu_id, minlevel, maxlevel, faction, npcflag, speed_walk, speed_run, unit_class, unit_flags, type, type_flags, RegenHealth, flags_extra, AIName, ScriptName) VALUES
 (@ENTRY, @NAME, @SUBNAME, "Directions", @GOSSIP_MENU, 71, 71, 35, 3, 1, 1.14286, 1.25, 1, 7, 138936390, 1, 2, "SmartAI", "SmartAI");
 
-INSERT INTO  creature_template_model (CreatureID,CreatureDisplayID,DisplayScale) VALUES
+INSERT INTO creature_template_model (CreatureID,CreatureDisplayID,DisplayScale) VALUES
 (@ENTRY, @MODEL, @SCALE);
 
 -- Teleporter aura
@@ -56,7 +56,10 @@ INSERT INTO gossip_menu (menuid, textid) VALUES
 (@GOSSIP_MENU+6, @TEXT_ID+4),
 (@GOSSIP_MENU+5, @TEXT_ID+4),
 (@GOSSIP_MENU, @TEXT_ID+1),
-(@GOSSIP_MENU, @TEXT_ID);
+(@GOSSIP_MENU, @TEXT_ID),
+-- BATTLEGROUNDS START
+(@GOSSIP_MENU+9, @TEXT_ID+5);
+-- BATTLEGROUNDS END
 
 -- Gossip header texts
 
@@ -65,7 +68,10 @@ INSERT INTO npc_text (ID, text0_0, em0_1) VALUES
 (@TEXT_ID+3, "$BBe careful with choosing raids, I won't be there if you wipe.$B", 0),
 (@TEXT_ID+2, "$BUp for some dungeon exploring?$B", 0),
 (@TEXT_ID+1, "$B For The Alliance!$B", 6),
-(@TEXT_ID,  "$B For the Horde!$B", 6);
+(@TEXT_ID, "$B For the Horde!$B", 6),
+-- BATTLEGROUNDS START
+(@TEXT_ID+5, "$BTo the battlefield, champion!$B", 0);
+-- BATTLEGROUNDS END
 
 -- Conditions for gossip option and menu factions
 
@@ -97,22 +103,29 @@ INSERT INTO conditions (SourceTypeOrReferenceId, SourceGroup, SourceEntry, Condi
 (15, @GOSSIP_MENU, 6, 6, 67, "Thunder bluff"),
 (15, @GOSSIP_MENU, 7, 6, 67, "Undercity"),
 (15, @GOSSIP_MENU, 8, 6, 67, "Silvermoon city"),
--- (15, @GOSSIP_MENU+1, 0, 6, 469, "Gnomeregan"),
--- (15, @GOSSIP_MENU+1, 1, 6, 469, "The Deadmines"),
--- (15, @GOSSIP_MENU+1, 2, 6, 469, "The Stockade"),
--- (15, @GOSSIP_MENU+1, 3, 6, 67, "Ragefire Chasm"),
--- (15, @GOSSIP_MENU+1, 4, 6, 67, "Razorfen Downs"),
--- (15, @GOSSIP_MENU+1, 5, 6, 67, "Razorfen Kraul"),
--- (15, @GOSSIP_MENU+1, 6, 6, 67, "Scarlet Monastery"),
--- (15, @GOSSIP_MENU+1, 7, 6, 67, "Shadowfang Keep"),
--- (15, @GOSSIP_MENU+1, 8, 6, 67, "Wailing Caverns"),
 (15, @GOSSIP_MENU+6, 9, 6, 67, "Thousand Needles"),
+-- BATTLEGROUNDS FACTION CONDITIONS START
+(15, @GOSSIP_MENU+9, 0, 6, 469, "Warsong Gulch - Alliance Only"),
+(15, @GOSSIP_MENU+9, 1, 6, 469, "Arathi Basin - Alliance Only"),
+(15, @GOSSIP_MENU+9, 2, 6, 469, "Alterac Valley - Alliance Only"),
+(15, @GOSSIP_MENU+9, 3, 6, 67, "Warsong Gulch - Horde Only"),
+(15, @GOSSIP_MENU+9, 4, 6, 67, "Arathi Basin - Horde Only"),
+(15, @GOSSIP_MENU+9, 5, 6, 67, "Alterac Valley - Horde Only"),
+-- BATTLEGROUNDS FACTION CONDITIONS END
 (14, @GOSSIP_MENU, @TEXT_ID+1, 6, 469, "For the Alliance"),
 (14, @GOSSIP_MENU, @TEXT_ID, 6, 67, "For the Horde");
 
 -- Conditions for gossip option levels
 
 INSERT INTO conditions (SourceTypeOrReferenceId, SourceGroup, SourceEntry, ConditionTypeOrReference, ConditionValue1, ConditionValue2, ConditionValue3, Comment) VALUES
+-- BATTLEGROUNDS LEVEL CONDITIONS START
+(15, @GOSSIP_MENU+9, 0, 27, 10, 3, 0, "Portal Master - Level req WSG Alliance"),
+(15, @GOSSIP_MENU+9, 1, 27, 20, 3, 0, "Portal Master - Level req AB Alliance"),
+(15, @GOSSIP_MENU+9, 2, 27, 50, 3, 0, "Portal Master - Level req AV Alliance"),
+(15, @GOSSIP_MENU+9, 3, 27, 10, 3, 0, "Portal Master - Level req WSG Horde"),
+(15, @GOSSIP_MENU+9, 4, 27, 20, 3, 0, "Portal Master - Level req AB Horde"),
+(15, @GOSSIP_MENU+9, 5, 27, 50, 3, 0, "Portal Master - Level req AV Horde"),
+-- BATTLEGROUNDS LEVEL CONDITIONS END
 (15, @GOSSIP_MENU+8, 9, 27, 77, 3, 0, "Portal Master - Level req"),
 (15, @GOSSIP_MENU+8, 8, 27, 77, 3, 0, "Portal Master - Level req"),
 (15, @GOSSIP_MENU+8, 7, 27, 77, 3, 0, "Portal Master - Level req"),
@@ -238,18 +251,18 @@ INSERT INTO conditions (SourceTypeOrReferenceId, SourceGroup, SourceEntry, Condi
 -- Gossip options:
 
 INSERT INTO gossip_menu_option (menuid, optionid, optionicon, optiontext, optiontype, optionnpcflag, actionmenuid, actionpoiid, boxcoded, boxmoney, boxtext) VALUES
-(@GOSSIP_MENU, 1, 2, "Stormwind", 1, 1, @GOSSIP_MENU, 0, 0, 0, "Are you sure, that you want to go to Stormwind?"),
-(@GOSSIP_MENU, 2, 2, "Orgrimmar", 1, 1, @GOSSIP_MENU, 0, 0, 0, "Are you sure, that you want to go to Orgrimmar?"),
-(@GOSSIP_MENU, 3, 2, "Darnassus", 1, 1, @GOSSIP_MENU, 0, 0, 0, "Are you sure, that you want to go to Darnassus?"),
-(@GOSSIP_MENU, 4, 2, "Ironforge", 1, 1, @GOSSIP_MENU, 0, 0, 0, "Are you sure, that you want to go to Ironforge?"),
-(@GOSSIP_MENU, 5, 2, "Exodar", 1, 1, @GOSSIP_MENU, 0, 0, 0, "Are you sure, that you want to go to Exodar?"),
-(@GOSSIP_MENU, 6, 2, "Thunder bluff", 1, 1, @GOSSIP_MENU, 0, 0, 0, "Are you sure, that you want to go to Thunder bluff?"),
-(@GOSSIP_MENU, 7, 2, "Undercity", 1, 1, @GOSSIP_MENU, 0, 0, 0, "Are you sure, that you want to go to Undercity?"),
-(@GOSSIP_MENU, 8, 2, "Silvermoon city", 1, 1, @GOSSIP_MENU, 0, 0, 0, "Are you sure, that you want to go to Silvermoon city?"),
-(@GOSSIP_MENU, 9, 2, "Dalaran", 1, 1, @GOSSIP_MENU, 0, 0, 0, "Are you sure, that you want to go to Dalaran?"),
-(@GOSSIP_MENU, 10, 2, "Shattrath", 1, 1, @GOSSIP_MENU, 0, 0, 0, "Are you sure, that you want to go to Shattrath?"),
-(@GOSSIP_MENU, 11, 2, "Booty bay", 1, 1, @GOSSIP_MENU, 0, 0, 0, "Are you sure, that you want to go to Booty bay?"),
-(@GOSSIP_MENU, 12, 2, "Gurubashi arena", 1, 1, @GOSSIP_MENU, 0, 0, 0, "Are you sure, that you want to go to Arena?"),
+(@GOSSIP_MENU, 1, 2, "Stormwind", 1, 1, 0, 0, 0, 0, "Are you sure, that you want to go to Stormwind?"),
+(@GOSSIP_MENU, 2, 2, "Orgrimmar", 1, 1, 0, 0, 0, 0, "Are you sure, that you want to go to Orgrimmar?"),
+(@GOSSIP_MENU, 3, 2, "Darnassus", 1, 1, 0, 0, 0, 0, "Are you sure, that you want to go to Darnassus?"),
+(@GOSSIP_MENU, 4, 2, "Ironforge", 1, 1, 0, 0, 0, 0, "Are you sure, that you want to go to Ironforge?"),
+(@GOSSIP_MENU, 5, 2, "Exodar", 1, 1, 0, 0, 0, 0, "Are you sure, that you want to go to Exodar?"),
+(@GOSSIP_MENU, 6, 2, "Thunder bluff", 1, 1, 0, 0, 0, 0, "Are you sure, that you want to go to Thunder bluff?"),
+(@GOSSIP_MENU, 7, 2, "Undercity", 1, 1, 0, 0, 0, 0, "Are you sure, that you want to go to Undercity?"),
+(@GOSSIP_MENU, 8, 2, "Silvermoon city", 1, 1, 0, 0, 0, 0, "Are you sure, that you want to go to Silvermoon city?"),
+(@GOSSIP_MENU, 9, 2, "Dalaran", 1, 1, 0, 0, 0, 0, "Are you sure, that you want to go to Dalaran?"),
+(@GOSSIP_MENU, 10, 2, "Shattrath", 1, 1, 0, 0, 0, 0, "Are you sure, that you want to go to Shattrath?"),
+(@GOSSIP_MENU, 11, 2, "Booty bay", 1, 1, 0, 0, 0, 0, "Are you sure, that you want to go to Booty bay?"),
+(@GOSSIP_MENU, 12, 2, "Gurubashi arena", 1, 1, 0, 0, 0, 0, "Are you sure, that you want to go to Arena?"),
 (@GOSSIP_MENU, 13, 3, "Eastern Kingdoms", 1, 1, @GOSSIP_MENU+5, 0, 0, 0, NULL),
 (@GOSSIP_MENU, 14, 3, "Kalimdor", 1, 1, @GOSSIP_MENU+6, 0, 0, 0, NULL),
 (@GOSSIP_MENU, 15, 3, "Outland", 1, 1, @GOSSIP_MENU+7, 0, 0, 0, NULL),
@@ -258,6 +271,9 @@ INSERT INTO gossip_menu_option (menuid, optionid, optionicon, optiontext, option
 (@GOSSIP_MENU, 18, 9, "BC Dungeons", 1, 1, @GOSSIP_MENU+2, 0, 0, 0, NULL),
 (@GOSSIP_MENU, 19, 9, "Wrath Dungeons", 1, 1, @GOSSIP_MENU+3, 0, 0, 0, NULL),
 (@GOSSIP_MENU, 20, 9, "Raid Teleports", 1, 1, @GOSSIP_MENU+4, 0, 0, 0, NULL),
+-- BATTLEGROUNDS START
+(@GOSSIP_MENU, 21, 9, "Classic Battlegrounds", 1, 1, @GOSSIP_MENU+9, 0, 0, 0, NULL),
+-- BATTLEGROUNDS END
 (@GOSSIP_MENU+1, 0, 2, "Gnomeregan", 1, 1, 0, 0, 0, 0, "Are you sure, that you want to go to Gnomeregan?"),
 (@GOSSIP_MENU+1, 1, 2, "The Deadmines", 1, 1, 0, 0, 0, 0, "Are you sure, that you want to go to The Deadmines?"),
 (@GOSSIP_MENU+1, 2, 2, "The Stockade", 1, 1, 0, 0, 0, 0, "Are you sure, that you want to go to The Stockade?"),
@@ -384,11 +400,20 @@ INSERT INTO gossip_menu_option (menuid, optionid, optionicon, optiontext, option
 (@GOSSIP_MENU+8, 7, 2, "Storm Peaks", 1, 1, 0, 0, 0, 0, "Are you sure, that you want to go to Storm Peaks?"),
 (@GOSSIP_MENU+8, 8, 2, "Icecrown", 1, 1, 0, 0, 0, 0, "Are you sure, that you want to go to Icecrown?"),
 (@GOSSIP_MENU+8, 9, 2, "Wintergrasp", 1, 1, 0, 0, 0, 0, "Are you sure, that you want to go to Wintergrasp?"),
-(@GOSSIP_MENU+8, 10, 7, "Back..", 1, 1, @GOSSIP_MENU, 0, 0, 0, NULL);
+(@GOSSIP_MENU+8, 10, 7, "Back..", 1, 1, @GOSSIP_MENU, 0, 0, 0, NULL),
+-- BATTLEGROUNDS START
+(@GOSSIP_MENU+9, 0, 2, "Warsong Gulch", 1, 1, 0, 0, 0, 0, "Are you sure you want to teleport to Silverwing Grove?"),
+(@GOSSIP_MENU+9, 1, 2, "Arathi Basin", 1, 1, 0, 0, 0, 0, "Are you sure you want to teleport to Refuge Pointe?"),
+(@GOSSIP_MENU+9, 2, 2, "Alterac Valley", 1, 1, 0, 0, 0, 0, "Are you sure you want to teleport to The Headlands?"),
+(@GOSSIP_MENU+9, 3, 2, "Warsong Gulch", 1, 1, 0, 0, 0, 0, "Are you sure you want to teleport to Mor'shan Rampart?"),
+(@GOSSIP_MENU+9, 4, 2, "Arathi Basin", 1, 1, 0, 0, 0, 0, "Are you sure you want to teleport to Hammerfall?"),
+(@GOSSIP_MENU+9, 5, 2, "Alterac Valley", 1, 1, 0, 0, 0, 0, "Are you sure you want to teleport to the Frostwolf entrance?"),
+(@GOSSIP_MENU+9, 6, 7, "Back..", 1, 1, @GOSSIP_MENU, 0, 0, 0, NULL);
+-- BATTLEGROUNDS END
 
 -- Teleport scripts:
 
-INSERT INTO smart_scripts (entryorguid, source_type, id, link, event_type, event_phase_mask, event_chance, event_flags, event_param1, event_param2, event_param3, event_param4, action_type, action_param1, action_param2, action_param3, action_param4, action_param5, action_param6, target_type, target_param1, target_param2, target_param3, target_x, target_y, target_z, target_o, comment) VALUES 
+INSERT INTO smart_scripts (entryorguid, source_type, id, link, event_type, event_phase_mask, event_chance, event_flags, event_param1, event_param2, event_param3, event_param4, action_type, action_param1, action_param2, action_param3, action_param4, action_param5, action_param6, target_type, target_param1, target_param2, target_param3, target_x, target_y, target_z, target_o, comment) VALUES
 (@ENTRY, 0, 1, 0, 62, 0, 100, 0, @GOSSIP_MENU, 1, 0, 0, 62, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, -8842.09, 626.358, 94.0867, 3.61363, "Teleporter script"),
 (@ENTRY, 0, 2, 0, 62, 0, 100, 0, @GOSSIP_MENU, 2, 0, 0, 62, 1, 0, 0, 0, 0, 0, 7, 0, 0, 0, 1601.08, -4378.69, 9.9846, 2.14362, "Teleporter script"),
 (@ENTRY, 0, 3, 0, 62, 0, 100, 0, @GOSSIP_MENU, 11, 0, 0, 62, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, -14281.9, 552.564, 8.90422, 0.860144, "Teleporter script"),
@@ -519,38 +544,46 @@ INSERT INTO smart_scripts (entryorguid, source_type, id, link, event_type, event
 (@ENTRY, 0, 128, 0, 62, 0, 100, 0, @GOSSIP_MENU+8, 6, 0, 0, 62, 571, 0, 0, 0, 0, 0, 7, 0, 0, 0, 5411.17, -966.37, 167.082, 1.57167, "Teleporter script"),
 (@ENTRY, 0, 129, 0, 62, 0, 100, 0, @GOSSIP_MENU+8, 7, 0, 0, 62, 571, 0, 0, 0, 0, 0, 7, 0, 0, 0, 6120.46, -1013.89, 408.39, 5.12322, "Teleporter script"),
 (@ENTRY, 0, 130, 0, 62, 0, 100, 0, @GOSSIP_MENU+8, 8, 0, 0, 62, 571, 0, 0, 0, 0, 0, 7, 0, 0, 0, 8323.28, 2763.5, 655.093, 2.87223, "Teleporter script"),
-(@ENTRY, 0, 131, 0, 62, 0, 100, 0, @GOSSIP_MENU+8, 9, 0, 0, 62, 571, 0, 0, 0, 0, 0, 7, 0, 0, 0, 4522.23, 2828.01, 389.975, 0.215009, "Teleporter script");
+(@ENTRY, 0, 131, 0, 62, 0, 100, 0, @GOSSIP_MENU+8, 9, 0, 0, 62, 571, 0, 0, 0, 0, 0, 7, 0, 0, 0, 4522.23, 2828.01, 389.975, 0.215009, "Teleporter script"),
+-- BATTLEGROUNDS START
+(@ENTRY, 0, 132, 0, 62, 0, 100, 0, @GOSSIP_MENU+9, 0, 0, 0, 62, 1, 0, 0, 0, 0, 0, 7, 0, 0, 0, 1487, -1866, 114, 4.71, "Teleporter script - Warsong Gulch (Alliance)"),
+(@ENTRY, 0, 133, 0, 62, 0, 100, 0, @GOSSIP_MENU+9, 1, 0, 0, 62, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, -1233, -2530, 22.2, 1.57, "Teleporter script - Arathi Basin (Alliance)"),
+(@ENTRY, 0, 134, 0, 62, 0, 100, 0, @GOSSIP_MENU+9, 2, 0, 0, 62, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, -17, -333, 132, 4.67, "Teleporter script - Alterac Valley (Alliance)"),
+(@ENTRY, 0, 135, 0, 62, 0, 100, 0, @GOSSIP_MENU+9, 3, 0, 0, 62, 1, 0, 0, 0, 0, 0, 7, 0, 0, 0, 1035, -2118, 123, 1.55, "Teleporter script - Warsong Gulch (Horde)"),
+(@ENTRY, 0, 136, 0, 62, 0, 100, 0, @GOSSIP_MENU+9, 4, 0, 0, 62, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, -845, -3526, 73, 6.28, "Teleporter script - Arathi Basin (Horde)"),
+(@ENTRY, 0, 137, 0, 62, 0, 100, 0, @GOSSIP_MENU+9, 5, 0, 0, 62, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 365, -987, 109, 1.62, "Teleporter script - Alterac Valley (Horde)");
+-- BATTLEGROUNDS END
 
 -- Teleporter spawns:
 
 ALTER TABLE creature AUTO_INCREMENT = 200000;
 INSERT INTO creature (id1, map, spawnMask, phaseMask, position_x, position_y, position_z, orientation, spawntimesecs, curhealth, curmana) VALUES
-(@ENTRY, 0, 1, 0, -13180.5, 342.503, 43.1936, 4.32977, 25, 13700, 6540), 
-(@ENTRY, 530, 1, 0, -3862.69, -11645.8, -137.629, 2.38273, 25, 13700, 6540), 
-(@ENTRY, 0, 1, 0, -4898.37, -965.118, 501.447, 2.25986, 25, 13700, 6540), 
-(@ENTRY, 0, 1, 0, -8845.09, 624.828, 94.2999, 0.44062, 25, 13700, 6540), 
-(@ENTRY, 1, 1, 0, 1599.25, -4375.85, 10.0872, 5.23641, 25, 13700, 6540), 
-(@ENTRY, 1, 1, 0, -1277.65, 72.9751, 128.742, 5.95567, 25, 13700, 6540), 
-(@ENTRY, 0, 1, 0, 1637.21, 240.132, -43.1034, 3.13147, 25, 13700, 6540), 
-(@ENTRY, 530, 1, 0, 9741.67, -7454.19, 13.5572, 3.14231, 25, 13700, 6540), 
-(@ENTRY, 571, 1, 0, 5807.06, 506.244, 657.576, 5.54461, 25, 13700, 6540), 
-(@ENTRY, 1, 1, 0, 9866.83, 2494.66, 1315.88, 5.9462, 25, 13700, 6540), 
-(@ENTRY, 0, 1, 0, -14279.8, 555.014, 8.90011, 3.97606, 25, 13700, 6540), 
+(@ENTRY, 0, 1, 0, -13180.5, 342.503, 43.1936, 4.32977, 25, 13700, 6540),
+(@ENTRY, 530, 1, 0, -3862.69, -11645.8, -137.629, 2.38273, 25, 13700, 6540),
+(@ENTRY, 0, 1, 0, -4898.37, -965.118, 501.447, 2.25986, 25, 13700, 6540),
+(@ENTRY, 0, 1, 0, -8845.09, 624.828, 94.2999, 0.44062, 25, 13700, 6540),
+(@ENTRY, 1, 1, 0, 1599.25, -4375.85, 10.0872, 5.23641, 25, 13700, 6540),
+(@ENTRY, 1, 1, 0, -1277.65, 72.9751, 128.742, 5.95567, 25, 13700, 6540),
+(@ENTRY, 0, 1, 0, 1637.21, 240.132, -43.1034, 3.13147, 25, 13700, 6540),
+(@ENTRY, 530, 1, 0, 9741.67, -7454.19, 13.5572, 3.14231, 25, 13700, 6540),
+(@ENTRY, 571, 1, 0, 5807.06, 506.244, 657.576, 5.54461, 25, 13700, 6540),
+(@ENTRY, 1, 1, 0, 9866.83, 2494.66, 1315.88, 5.9462, 25, 13700, 6540),
+(@ENTRY, 0, 1, 0, -14279.8, 555.014, 8.90011, 3.97606, 25, 13700, 6540),
 (@ENTRY, 530, 1, 0, -1888.65, 5355.88, -12.4279, 1.25883, 25, 13700, 6540);
 
 -- Rune spawns:
 
 ALTER TABLE gameobject AUTO_INCREMENT = 200000;
 INSERT INTO gameobject (id, map, spawnMask, phaseMask, position_x, position_y, position_z, orientation, rotation2, rotation3, spawntimesecs, state) VALUES
-(@RUNE, 1, 1, 1, 1601.08, -4378.69, 9.9846, 2.14362, 0.878068, 0.478536, 25, 1), 
-(@RUNE, 0, 1, 1, -14281.9, 552.564, 8.90382, 0.860144, 0.416936, 0.908936, 25, 1), 
-(@RUNE, 0, 1, 1, -8842.09, 626.358, 94.0868, 3.61363, 0.972276, -0.233836, 25, 1), 
-(@RUNE, 0, 1, 1, -4900.47, -962.585, 501.455, 5.40538, 0.424947, -0.905218, 25, 1), 
-(@RUNE, 1, 1, 1, 9869.91, 2493.58, 1315.88, 5.9462, 0.167696, -0.985839, 25, 1), 
-(@RUNE, 530, 1, 1, -3864.92, -11643.7, -137.644, 2.38273, 0.928875, 0.370392, 25, 1), 
-(@RUNE, 530, 1, 1, -1887.62, 5359.09, -12.4279, 4.40435, 0.758205, 0.652017, 25, 1), 
-(@RUNE, 571, 1, 1, 5809.55, 503.975, 657.526, 5.54461, 0.360952, -0.932584, 25, 1), 
-(@RUNE, 530, 1, 1, 9738.28, -7454.19, 13.5605, 3.14231, 1, -0.000358625, 25, 1), 
-(@RUNE, 0, 1, 1, 1633.75, 240.167, -43.1034, 3.13147, 0.999987, 0.00506132, 25, 1), 
-(@RUNE, 0, 1, 1, -13181.8, 339.356, 42.9805, 1.18013, 0.556415, 0.830904, 25, 1), 
+(@RUNE, 1, 1, 1, 1601.08, -4378.69, 9.9846, 2.14362, 0.878068, 0.478536, 25, 1),
+(@RUNE, 0, 1, 1, -14281.9, 552.564, 8.90382, 0.860144, 0.416936, 0.908936, 25, 1),
+(@RUNE, 0, 1, 1, -8842.09, 626.358, 94.0868, 3.61363, 0.972276, -0.233836, 25, 1),
+(@RUNE, 0, 1, 1, -4900.47, -962.585, 501.455, 5.40538, 0.424947, -0.905218, 25, 1),
+(@RUNE, 1, 1, 1, 9869.91, 2493.58, 1315.88, 5.9462, 0.167696, -0.985839, 25, 1),
+(@RUNE, 530, 1, 1, -3864.92, -11643.7, -137.644, 2.38273, 0.928875, 0.370392, 25, 1),
+(@RUNE, 530, 1, 1, -1887.62, 5359.09, -12.4279, 4.40435, 0.758205, 0.652017, 25, 1),
+(@RUNE, 571, 1, 1, 5809.55, 503.975, 657.526, 5.54461, 0.360952, -0.932584, 25, 1),
+(@RUNE, 530, 1, 1, 9738.28, -7454.19, 13.5605, 3.14231, 1, -0.000358625, 25, 1),
+(@RUNE, 0, 1, 1, 1633.75, 240.167, -43.1034, 3.13147, 0.999987, 0.00506132, 25, 1),
+(@RUNE, 0, 1, 1, -13181.8, 339.356, 42.9805, 1.18013, 0.556415, 0.830904, 25, 1),
 (@RUNE, 1, 1, 1, -1274.45, 71.8601, 128.159, 2.80623, 0.985974, 0.166898, 25, 1);
