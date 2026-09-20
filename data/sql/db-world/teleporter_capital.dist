@@ -27,7 +27,7 @@ DELETE FROM npc_text WHERE ID BETWEEN @TEXT_ID AND @TEXT_ID+5;
 DELETE FROM gossip_menu_option WHERE menuid BETWEEN @GOSSIP_MENU AND @GOSSIP_MENU+9;
 DELETE FROM smart_scripts WHERE entryorguid = @ENTRY AND source_type = 0;
 DELETE FROM conditions WHERE (SourceTypeOrReferenceId = 15 OR SourceTypeOrReferenceId = 14) AND SourceGroup BETWEEN @GOSSIP_MENU AND @GOSSIP_MENU+9;
-DELETE from creature WHERE id1 = @ENTRY;
+DELETE from creature WHERE id = @ENTRY;
 DELETE from gameobject WHERE ID = @RUNE AND guid >= 200000;
 
 -- Teleporter
@@ -555,7 +555,7 @@ INSERT INTO smart_scripts (entryorguid, source_type, id, link, event_type, event
 -- Teleporter spawns:
 
 ALTER TABLE creature AUTO_INCREMENT = 200000;
-INSERT INTO creature (id1, map, spawnMask, phaseMask, position_x, position_y, position_z, orientation, spawntimesecs, curhealth, curmana) VALUES
+INSERT INTO creature (id, map, spawnMask, phaseMask, position_x, position_y, position_z, orientation, spawntimesecs, curhealth, curmana) VALUES
 (@ENTRY, 0, 1, 0, -13180.5, 342.503, 43.1936, 4.32977, 25, 13700, 6540),
 (@ENTRY, 530, 1, 0, -3862.69, -11645.8, -137.629, 2.38273, 25, 13700, 6540),
 (@ENTRY, 0, 1, 0, -4898.37, -965.118, 501.447, 2.25986, 25, 13700, 6540),
