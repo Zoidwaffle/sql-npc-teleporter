@@ -13,7 +13,7 @@ SET
 @SCALE := 2,
 @AURA := "30540", -- "35766" = casting
 @TEXT_ID := 300000,
-@GOSSIP_MENU := 50000,
+@GOSSIP_MENU := 60000,
 @RUNE := 194394,
 @ONY_LEVEL := 60; -- 60 or 80 for Onyxia
 
