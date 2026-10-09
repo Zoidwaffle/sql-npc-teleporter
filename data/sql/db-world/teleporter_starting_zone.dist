@@ -26,7 +26,7 @@ SET
 @HORDE_FACTION    := 67,
 
 @TEXT_ID        := 300005,
-@GOSSIP_MENU    := 50009;
+@GOSSIP_MENU    := 60010;
 
 -- Deleting code
 
